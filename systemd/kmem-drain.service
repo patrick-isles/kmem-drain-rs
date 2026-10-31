@@ -1,0 +1,24 @@
+[Unit]
+Description=Linux Kernel Memory & Zombie Shared-Memory Sentinel
+After=network.target local-fs.target
+Documentation=https://github.com/patrick-isles/kmem-drain-rs
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/local/bin/kmem-drain-rs
+Restart=always
+RestartSec=5s
+
+# Enterprise Hardening Controls
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ProtectControlGroups=true
+MemoryDenyWriteExecute=true
+CapabilityBoundingSet=CAP_SYS_ADMIN CAP_IPC_OWNER
+AmbientCapabilities=CAP_SYS_ADMIN CAP_IPC_OWNER
+
+[Install]
+WantedBy=multi-user.target
